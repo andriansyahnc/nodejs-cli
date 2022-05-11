@@ -1,12 +1,12 @@
 const os = require('os');
+const Console = require('Console');
 
 const userHomeDir = os.homedir();
 process.env.DIRECTORY = `${userHomeDir}/.nodejs-cli-test`;
 const {create} = require('../cli');
 
 describe.only('create', () => {
-  // eslint-disable-next-line no-console
-  console.log = jest.fn();
+  Console.log = jest.fn();
 
   beforeEach(() => {
     jest.resetModules();
@@ -16,7 +16,6 @@ describe.only('create', () => {
     const arrLen = 10;
     create({_: [arrLen]});
     const message = `Created parking lot with ${arrLen} slots`;
-    // eslint-disable-next-line no-console
-    expect(console.log).toHaveBeenCalledWith(message);
+    expect(Console.log).toHaveBeenCalledWith(message);
   });
 });
