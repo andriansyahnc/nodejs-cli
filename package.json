@@ -19,7 +19,8 @@
   "bin": {
     "create": "./bin/create.js",
     "park": "./bin/park.js",
-    "status": "./bin/status.js"
+    "status": "./bin/status.js",
+    "leave": "./bin/leave.js"
   },
   "dependencies": {
     "cli-table3": "^0.6.2",

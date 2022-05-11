@@ -84,9 +84,51 @@ const status = (argv) => {
          , 'right': '' , 'right-mid': '' , 'middle': ' ' },
       })
       arrData.data.forEach((element, idx) => {
-        table.push([idx + 1, element]);
+        table.push([idx + 1, element ?? "empty"]);
       });
       console.log(table.toString());
+    }
+  });
+  
+}
+
+const leave = (argv) => {
+  if (!fs.existsSync(file)) {
+    console.log("Parking lot not created yet.")
+    return;
+  }
+  const carNumber = argv._?.[0];
+  const hour = argv._?.[1];
+  if (carNumber === undefined || hour === undefined) {
+      console.error("Car number and hour required, please run `leave --help` for further information");
+      return;
+  }
+  fs.readFile(file, 'utf-8', (err, data) => {
+    if (err)
+      console.log(err);
+    else {
+      const fileData = JSON.parse(data);
+      const idx = fileData.data.findIndex((item) => item === carNumber);
+      if (idx === -1) {
+        console.log(`Registration Number ${carNumber} not found`);
+        return;
+      }
+      set(fileData, `data[${idx}]`, null);
+      const newData = JSON.stringify(fileData);
+      fs.writeFile(file, newData, (err) => {
+        if (err)
+          console.log(err);
+        else {
+          let fee = 10;
+          if (hour <= 2) {
+            console.log(`Registration Number ${carNumber} from Slot ${idx + 1} has left with Charge ${fee}`);
+            return;
+          }
+          const additionalFee = (hour - 2) * 10;
+          fee = fee + additionalFee;
+          console.log(`Registration Number ${carNumber} from Slot ${idx + 1} has left with Charge ${fee}`);
+        }
+      })   
     }
   });
   
@@ -96,4 +138,5 @@ module.exports = {
     create,
     park,
     status,
+    leave,
 };
