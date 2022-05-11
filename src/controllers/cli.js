@@ -38,7 +38,7 @@ const park = (argv) => {
 
   const carNumber = argv._?.[0];
   if (carNumber === undefined) {
-    console.error('Car number required, please run `park --help` for further information');
+    Console.error('Car number required, please run `park --help` for further information');
     return;
   }
   const data = fs.readFileSync(file, {encoding: 'utf-8', flag: 'r'});
