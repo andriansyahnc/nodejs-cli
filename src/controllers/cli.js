@@ -60,7 +60,7 @@ const status = () => {
     return;
   }
 
-  const data = fs.readFileSync(file, 'utf-8');
+  const data = fs.readFileSync(file, {encoding: 'utf-8', flag: 'r'});
   const arrData = JSON.parse(data);
   const table = new Table({
     head: [colors.white('Slot No.'), colors.white('Registration No.')],
@@ -88,7 +88,7 @@ const leave = (argv) => {
     console.error('Car number and hour required, please run `leave --help` for further information');
     return;
   }
-  const data = fs.readFileSync(file, 'utf-8');
+  const data = fs.readFileSync(file, {encoding: 'utf-8', flag: 'r'});
   const fileData = JSON.parse(data);
   const idx = fileData.data.findIndex((item) => item === carNumber);
   if (idx === -1) {
@@ -97,14 +97,9 @@ const leave = (argv) => {
   }
   set(fileData, `data[${idx}]`, null);
   const newData = JSON.stringify(fileData);
-  fs.writeFile(file, newData, (err) => {
-    if (err) {
-      Console.log(err);
-    } else {
-      const fee = getFee(hour);
-      Console.log(`Registration Number ${carNumber} from Slot ${idx + 1} has left with Charge ${fee}`);
-    }
-  });
+  fs.writeFileSync(file, newData);
+  const fee = getFee(hour);
+  Console.log(`Registration Number ${carNumber} from Slot ${idx + 1} has left with Charge ${fee}`);
 };
 
 module.exports = {
