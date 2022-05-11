@@ -2,7 +2,8 @@ const fs = require('fs');
 const os = require('os');
 const set = require('lodash/set');
 const Table = require('cli-table3');
-const colors = require('@colors/colors')
+const colors = require('@colors/colors');
+const { isParkingLotExists, getFee } = require('../utils/common');
 
 const userHomeDir = os.homedir();
 const dir = `${userHomeDir}/.nodejs-cli`
@@ -32,10 +33,11 @@ const create = (argv) => {
 }
 
 const park = (argv) => {
-  if (!fs.existsSync(file)) {
-    console.log("Parking lot not created yet.")
+  if (!isParkingLotExists()) {
+    console.log("Parking lot not created yet.");
     return;
   }
+
   const carNumber = argv._?.[0];
   if (carNumber === undefined) {
       console.error("Car number required, please run `park --help` for further information");
@@ -66,10 +68,11 @@ const park = (argv) => {
 }
 
 const status = (argv) => {
-  if (!fs.existsSync(file)) {
-    console.log("Parking lot not created yet.")
+  if (!isParkingLotExists()) {
+    console.log("Parking lot not created yet.");
     return;
   }
+
   fs.readFile(file, 'utf-8', (err, data) => {
     if (err)
       console.log(err);
@@ -93,10 +96,11 @@ const status = (argv) => {
 }
 
 const leave = (argv) => {
-  if (!fs.existsSync(file)) {
-    console.log("Parking lot not created yet.")
+  if (!isParkingLotExists()) {
+    console.log("Parking lot not created yet.");
     return;
   }
+
   const carNumber = argv._?.[0];
   const hour = argv._?.[1];
   if (carNumber === undefined || hour === undefined) {
@@ -119,13 +123,7 @@ const leave = (argv) => {
         if (err)
           console.log(err);
         else {
-          let fee = 10;
-          if (hour <= 2) {
-            console.log(`Registration Number ${carNumber} from Slot ${idx + 1} has left with Charge ${fee}`);
-            return;
-          }
-          const additionalFee = (hour - 2) * 10;
-          fee = fee + additionalFee;
+          $fee = getFee(hour);
           console.log(`Registration Number ${carNumber} from Slot ${idx + 1} has left with Charge ${fee}`);
         }
       })   
