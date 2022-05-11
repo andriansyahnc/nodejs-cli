@@ -7,6 +7,7 @@ const {create} = require('../cli');
 
 describe.only('create', () => {
   Console.log = jest.fn();
+  Console.error = jest.fn();
 
   beforeEach(() => {
     jest.resetModules();
@@ -17,5 +18,11 @@ describe.only('create', () => {
     create({_: [arrLen]});
     const message = `Created parking lot with ${arrLen} slots`;
     expect(Console.log).toHaveBeenCalledWith(message);
+  });
+
+  it('create with no parameter', async () => {
+    create({_: []});
+    const message = 'Length of array required, please run `create --h` for further information';
+    expect(Console.error).toHaveBeenCalledWith(message);
   });
 });

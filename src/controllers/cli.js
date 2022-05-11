@@ -15,7 +15,7 @@ const create = (argv) => {
   if (arrLen === undefined) {
     const errMess =
     'Length of array required, please run `create --h` for further information';
-    console.error(errMess);
+    Console.error(errMess);
     return;
   }
   if (!fs.existsSync(dir)) {
