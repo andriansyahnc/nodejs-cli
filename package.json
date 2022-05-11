@@ -18,9 +18,11 @@
   "homepage": "https://github.com/andriansyahnc/nodejs-cli#readme",
   "bin": {
     "create": "./bin/create.js",
-    "park": "./bin/park.js"
+    "park": "./bin/park.js",
+    "status": "./bin/status.js"
   },
   "dependencies": {
+    "cli-table3": "^0.6.2",
     "lodash": "^4.17.21",
     "yargs": "^17.4.1"
   }
