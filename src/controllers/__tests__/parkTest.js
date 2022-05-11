@@ -5,7 +5,7 @@ const userHomeDir = os.homedir();
 process.env.DIRECTORY = `${userHomeDir}/.nodejs-cli-test`;
 const {create, park} = require('../cli');
 
-describe.only('create', () => {
+describe.only('park', () => {
   Console.log = jest.fn();
   Console.error = jest.fn();
 
